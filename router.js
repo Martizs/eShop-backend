@@ -5,11 +5,28 @@ import passportLocal from "passport-local";
 import User from "./models/user";
 /* controllers */
 import { UserController } from "./controllers/UserController";
+import { ProductController } from "./controllers/ProductController";
 /* utils */
-// import multer from "multer";
+import multer from "multer";
+import mime from "mime-types";
 import { handleResponse } from "./utils/general";
+/* consts */
+import { staticPath } from "./consts/general";
 
 const router = express.Router();
+
+const imgDest = multer({
+  storage: multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, staticPath);
+    },
+    filename: (req, file, cb) => {
+      const name = Math.random().toString(36).substr(2, 20);
+      const ext = mime.extension(file.mimetype);
+      cb(null, name + "." + ext);
+    },
+  }),
+});
 
 // getting the local authentication type
 const LocalStrategy = passportLocal.Strategy;
@@ -70,13 +87,13 @@ passport.deserializeUser((id, done) => {
 /* ------------ MIDDLEWARE  START --------------------------*/
 export const authMiddleware = (req, res, next) => {
   if (!req.isAuthenticated()) {
-    handleResponse(401, "You are not authenticated", res);
+    handleResponse("You are not authenticated", res, 401);
   } else {
     // we will check here if the user has been blocked before letting
     // them procceed with any logged in routes
     User.findById(req.session.passport.user).exec((err) => {
       if (err) {
-        handleResponse(401, "You are not authenticated", res);
+        handleResponse("You are not authenticated", res, 401);
       } else {
         next();
       }
@@ -92,6 +109,18 @@ router.get("/logOut", UserController.logOut);
 
 /*--------------- ADMIN ROUTES START -----------------------*/
 router.get("/isLoggedIn", authMiddleware, UserController.isLoggedIn);
-/*--------------- ADMIN ROUTES START -----------------------*/
+router.post(
+  "/updateCreate",
+  authMiddleware,
+  imgDest.array("file"),
+  ProductController.updateCreate
+);
+router.post("/delProd", authMiddleware, ProductController.delProd);
+/*--------------- ADMIN ROUTES END -------------------------*/
+
+/*--------------- PUBLIC ROUTES START -----------------------*/
+router.get("/getProducts", ProductController.getProducts);
+router.get("/getProduct", ProductController.getProduct);
+/*--------------- PUBLIC ROUTES END -------------------------*/
 
 export default router;

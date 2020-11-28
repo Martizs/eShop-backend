@@ -12,7 +12,7 @@ otherwise the whole object is sent */
 // ALSO one thing to note if the error is of an object type, that means
 // that a random error appeared so we will also console log it out to the
 // logs and send a message to the front saying 'Something went wrong'
-export function handleResponse(status, item, res) {
+export function handleResponse(item, res, status = 200) {
   if (status === 200) {
     if (typeof item === "string") {
       res.send({

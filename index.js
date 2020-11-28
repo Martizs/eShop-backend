@@ -34,6 +34,9 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// for parsing multipart/form-data
+app.use("/static", express.static("static"));
+
 app.use(
   session({
     // TODO: use this in production

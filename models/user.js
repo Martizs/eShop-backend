@@ -13,14 +13,6 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    // field to store active socket id's
-    // of the currently logged in user
-    // so we could do them socket messages
-    // to the frontend n shit
-    activeSockets: {
-      type: [String],
-      default: [],
-    },
   },
   { timestamps: true }
 );
@@ -57,16 +49,17 @@ UserSchema.pre("save", function (next) {
 UserSchema.methods.comparePassword = function (candidatePassword) {
   const checkPass = this.password;
   return new Promise((resolve, reject) => {
-    return bcrypt.compare(candidatePassword, checkPass, function (
-      err,
-      isMatch
-    ) {
-      if (err || !isMatch) {
-        reject(err);
-      } else {
-        resolve();
+    return bcrypt.compare(
+      candidatePassword,
+      checkPass,
+      function (err, isMatch) {
+        if (err || !isMatch) {
+          reject(err);
+        } else {
+          resolve();
+        }
       }
-    });
+    );
   });
 };
 
