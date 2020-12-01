@@ -6,6 +6,8 @@ import User from "./models/user";
 /* controllers */
 import { UserController } from "./controllers/UserController";
 import { ProductController } from "./controllers/ProductController";
+import { SendOptionsController } from "./controllers/SendOptionsController";
+import { OrderController } from "./controllers/OrderController";
 /* utils */
 import multer from "multer";
 import mime from "mime-types";
@@ -116,11 +118,24 @@ router.post(
   ProductController.updateCreate
 );
 router.post("/delProd", authMiddleware, ProductController.delProd);
+router.post(
+  "/optUpdtCreate",
+  authMiddleware,
+  SendOptionsController.optUpdtCreate
+);
+router.get("/getOrders", authMiddleware, OrderController.getOrders);
+router.post("/declineOrder", authMiddleware, OrderController.declineOrder);
+router.post("/confirmOrder", authMiddleware, OrderController.confirmOrder);
 /*--------------- ADMIN ROUTES END -------------------------*/
 
 /*--------------- PUBLIC ROUTES START -----------------------*/
+router.get("/getOptions", SendOptionsController.getOptions);
 router.get("/getProducts", ProductController.getProducts);
 router.get("/getProduct", ProductController.getProduct);
+router.post("/validateOrder", OrderController.validateOrder);
+router.post("/addOrder", OrderController.addOrder);
+router.post("/orderPayed", OrderController.orderPayed);
+router.post("/cancelOrder", OrderController.cancelOrder);
 /*--------------- PUBLIC ROUTES END -------------------------*/
 
 export default router;

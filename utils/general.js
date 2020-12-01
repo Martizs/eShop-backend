@@ -34,3 +34,27 @@ export function handleResponse(item, res, status = 200) {
     }
   }
 }
+
+export function sendEmail(email, orderCode) {
+  const send = require("gmail-send")({
+    user: process.env.EMAIL,
+    pass: process.env.EMAIL_PASS,
+    to: email,
+    subject: "Užsakymas iš dzhiunglių",
+  });
+  send(
+    {
+      html: `
+        <div>
+            <h1>Užsakymas iš dzhiunglių</h1>
+            <h1>Jūsų užsakymo numeris: ${orderCode}</h1>
+        </div>
+        `,
+    },
+    (error) => {
+      if (error) {
+        console.log(getDateStamp(), "Email send error: ", error);
+      }
+    }
+  );
+}

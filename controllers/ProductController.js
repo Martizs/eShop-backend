@@ -49,10 +49,7 @@ export const ProductController = {
               } else {
                 // updating sizes
                 product.sizes.forEach((dbSize) => {
-                  if (
-                    dbSize._id == size._id &&
-                    (dbSize.name !== size.name || dbSize.amount !== size.amount)
-                  ) {
+                  if (dbSize._id == size._id) {
                     updateSizes.push({
                       updateOne: {
                         filter: { _id: dbSize._id },
@@ -166,10 +163,18 @@ export const ProductController = {
                 product.desc = desc === "null" ? null : desc;
                 product.category = category;
 
+                const newProdSizes = [];
+
                 // pushing in new sizes if there were any
                 Object.values(sizeWriteRes.insertedIds).forEach((idItem) => {
-                  product.sizes.push(idItem._id);
+                  newProdSizes.push(idItem._id);
                 });
+
+                updateSizes.forEach((updtSize) => {
+                  newProdSizes.push(updtSize.updateOne.filter._id);
+                });
+
+                product.sizes = newProdSizes;
 
                 product.imgData = updtImgData;
 
@@ -308,7 +313,8 @@ export const ProductController = {
     const sizeNumb = parseInt(size, 10);
 
     Product.find()
-      .select("title price imgData")
+      .select("title price imgData sizes")
+      .populate("sizes")
       .limit(sizeNumb)
       .skip((pageNumb - 1) * sizeNumb)
       .sort({
