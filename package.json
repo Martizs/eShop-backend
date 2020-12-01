@@ -18,7 +18,6 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-session": "^1.17.0",
-    "gmail-send": "^1.8.10",
     "lodash": "^4.17.20",
     "mime-types": "^2.1.27",
     "mongoose": "^5.9.2",
