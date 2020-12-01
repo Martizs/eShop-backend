@@ -24,6 +24,7 @@ export const SendOptionsController = {
                   name: option.name,
                   price: option.price,
                   extraInfo: option.extraInfo,
+                  short: option.short,
                 },
               },
             });
@@ -34,7 +35,8 @@ export const SendOptionsController = {
                 dbOption._id == option._id &&
                 (dbOption.name !== option.name ||
                   dbOption.price !== option.price ||
-                  dbOption.extraInfo !== option.extraInfo)
+                  dbOption.extraInfo !== option.extraInfo ||
+                  dbOption.short !== option.short)
               ) {
                 updtOptions.push({
                   updateOne: {
@@ -44,6 +46,7 @@ export const SendOptionsController = {
                         name: option.name,
                         price: option.price,
                         extraInfo: option.extraInfo,
+                        short: option.short,
                       },
                     },
                   },

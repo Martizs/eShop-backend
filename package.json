@@ -29,8 +29,7 @@
     "passport-local": "^1.0.0",
     "query-string": "^6.11.1",
     "secure-env": "^1.2.0",
-    "socket.io": "^3.0.1",
-    "stripe": "^8.126.0"
+    "socket.io": "^3.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",

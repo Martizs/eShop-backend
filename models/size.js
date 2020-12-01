@@ -7,12 +7,6 @@ const SizeSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    orders: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Order",
-      },
-    ],
     product: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Product",

@@ -74,21 +74,13 @@ export const ProductController = {
                 (size) => dbSize._id == size._id
               );
               if (!delSize) {
-                if (dbSize.orders.length) {
-                  return handleResponse(
-                    "Cannot delete size with pending orders",
-                    res,
-                    405
-                  );
-                } else {
-                  delSizes.push({
-                    deleteOne: {
-                      filter: {
-                        _id: dbSize._id,
-                      },
+                delSizes.push({
+                  deleteOne: {
+                    filter: {
+                      _id: dbSize._id,
                     },
-                  });
-                }
+                  },
+                });
               }
             });
 
@@ -272,18 +264,6 @@ export const ProductController = {
         if (err) {
           handleResponse(err, res, 500);
         } else {
-          // we first check if any orders are pending
-          for (let i = 0; i < product.sizes.length; i++) {
-            const size = product.sizes[0];
-            if (size.orders.length) {
-              return handleResponse(
-                "You cant delete a product with pending orders",
-                res,
-                405
-              );
-            }
-          }
-
           Size.deleteMany({ product: product.id }, (sizeErr) => {
             if (sizeErr) {
               handleResponse(sizeErr, res, 500);
