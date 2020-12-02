@@ -287,26 +287,74 @@ export const ProductController = {
       });
   },
   getProducts: (req, res) => {
-    const { page, size } = req.query;
+    const { page, size, cat, rand } = req.query;
 
     const pageNumb = parseInt(page, 10);
     const sizeNumb = parseInt(size, 10);
 
-    Product.find()
-      .select("title price imgData sizes")
-      .populate("sizes")
-      .limit(sizeNumb)
-      .skip((pageNumb - 1) * sizeNumb)
-      .sort({
-        createdAt: "desc",
-      })
-      .exec((err, products) => {
-        if (err) {
-          handleResponse(err, res, 500);
-        } else {
-          handleResponse(products, res);
-        }
-      });
+    const query =
+      cat && cat !== "all"
+        ? {
+            category: cat,
+          }
+        : {};
+
+    if (rand) {
+      Product.find()
+        .select("title price imgData sizes")
+        .populate("sizes")
+        .exec((err, products) => {
+          if (err) {
+            handleResponse(err, res, 500);
+          } else {
+            // VERY IMPORTANT, we only do the randomizing for
+            // when there's at least 9 products, so as the randomizer would
+            // not lag the response
+
+            if (products.length > 8) {
+              // and here we randomize
+              const max = products.length;
+
+              const randIndexes = [];
+
+              for (let i = 0; i < size; i++) {
+                const randInd = Math.floor(Math.random() * Math.floor(max));
+                if (randIndexes.indexOf(randInd) === -1) {
+                  randIndexes.push(randInd);
+                } else {
+                  i--;
+                }
+              }
+
+              const randProds = [];
+
+              randIndexes.forEach((randInd) => {
+                randProds.push(products[randInd]);
+              });
+
+              handleResponse(randProds, res);
+            } else {
+              handleResponse(products, res);
+            }
+          }
+        });
+    } else {
+      Product.find(query)
+        .select("title price imgData sizes")
+        .populate("sizes")
+        .limit(sizeNumb)
+        .skip((pageNumb - 1) * sizeNumb)
+        .sort({
+          createdAt: "desc",
+        })
+        .exec((err, products) => {
+          if (err) {
+            handleResponse(err, res, 500);
+          } else {
+            handleResponse(products, res);
+          }
+        });
+    }
   },
   getProduct: (req, res) => {
     const { id } = req.query;

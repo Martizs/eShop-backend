@@ -91,17 +91,9 @@ passport.deserializeUser((id, done) => {
 /* ------------ MIDDLEWARE  START --------------------------*/
 export const authMiddleware = (req, res, next) => {
   if (!req.isAuthenticated()) {
-    handleResponse("You are not authenticated", res, 401);
+    handleResponse({ error: "You are not authenticated" }, res);
   } else {
-    // we will check here if the user has been blocked before letting
-    // them procceed with any logged in routes
-    User.findById(req.session.passport.user).exec((err) => {
-      if (err) {
-        handleResponse("You are not authenticated", res, 401);
-      } else {
-        next();
-      }
-    });
+    next();
   }
 };
 /* ------------ MIDDLEWARE  END ----------------------------*/
