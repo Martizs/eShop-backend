@@ -8,6 +8,8 @@ import { UserController } from "./controllers/UserController";
 import { ProductController } from "./controllers/ProductController";
 import { SendOptionsController } from "./controllers/SendOptionsController";
 import { OrderController } from "./controllers/OrderController";
+import { BannerController } from "./controllers/BannerController";
+import { CMSController } from "./controllers/CMSController";
 /* utils */
 import multer from "multer";
 import mime from "mime-types";
@@ -123,6 +125,16 @@ router.post(
   authMiddleware,
   SendOptionsController.optUpdtCreate
 );
+router.post(
+  "/updtCreateBan",
+  authMiddleware,
+  imgDest.array("file"),
+  BannerController.updtCreateBan
+);
+router.post("/saveAbout", authMiddleware, CMSController.saveAbout);
+router.post("/saveContact", authMiddleware, CMSController.saveContact);
+router.post("/saveInfo", authMiddleware, CMSController.saveInfo);
+router.post("/savePolicy", authMiddleware, CMSController.savePolicy);
 /*--------------- ADMIN ROUTES END -------------------------*/
 
 /*--------------- PUBLIC ROUTES START -----------------------*/
@@ -131,6 +143,11 @@ router.get("/getProducts", ProductController.getProducts);
 router.get("/getProduct", ProductController.getProduct);
 router.post("/validateOrder", OrderController.validateOrder);
 router.post("/orderSucces", OrderController.orderSucces);
+router.get("/getBanners", BannerController.getBanners);
+router.get("/getAbout", CMSController.getAbout);
+router.get("/getContact", CMSController.getContact);
+router.get("/getInfo", CMSController.getInfo);
+router.get("/getPolicy", CMSController.getPolicy);
 /*--------------- PUBLIC ROUTES END -------------------------*/
 
 export default router;

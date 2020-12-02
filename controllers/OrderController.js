@@ -3,7 +3,7 @@ import Size from "./../models/size";
 import SendOption from "./../models/sendOption";
 /* utils */
 import findIndex from "lodash/findIndex";
-import { handleResponse } from "../utils/general";
+import { getDateStamp, handleResponse } from "../utils/general";
 
 export const OrderController = {
   validateOrder: async (req, res) => {
@@ -94,7 +94,11 @@ export const OrderController = {
 
     const updtSizes = [];
 
+    const sizeIds = [];
+
     cartItems.forEach((cartIt) => {
+      sizeIds.push(cartIt.selectedSize._id);
+
       updtSizes.push({
         updateOne: {
           filter: { _id: cartIt.selectedSize._id },
@@ -106,6 +110,8 @@ export const OrderController = {
         },
       });
     });
+
+    console.log(getDateStamp(), "Order made with sizeIds", sizeIds);
 
     Size.bulkWrite(updtSizes)
       .then(() => {
