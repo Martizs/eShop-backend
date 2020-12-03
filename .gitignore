@@ -5,3 +5,4 @@ yarn.lock
 dzhiungles-backend.code-workspace
 static/*
 !.git-keep
+!tabPic.png
