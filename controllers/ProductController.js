@@ -287,20 +287,23 @@ export const ProductController = {
       });
   },
   getProducts: (req, res) => {
-    const { page, size, cat, rand } = req.query;
+    const { page, size, cat, rand, noId } = req.query;
 
     const pageNumb = parseInt(page, 10);
     const sizeNumb = parseInt(size, 10);
 
-    const query =
-      cat && cat !== "all"
-        ? {
-            category: cat,
-          }
-        : {};
+    const query = {};
+
+    if (cat && cat !== "all") {
+      query.category = cat;
+    }
 
     if (rand) {
-      Product.find()
+      if (noId && noId !== "new") {
+        query._id = { $ne: noId };
+      }
+
+      Product.find(query)
         .select("title price imgData sizes")
         .populate("sizes")
         .exec((err, products) => {
@@ -332,28 +335,61 @@ export const ProductController = {
                 randProds.push(products[randInd]);
               });
 
-              handleResponse(randProds, res);
+              // here the count shouldnt matter as
+              // it only applies for the suggested items
+              // which dont have pagination
+              handleResponse(
+                {
+                  count: size,
+                  products: randProds,
+                },
+                res
+              );
             } else {
-              handleResponse(products, res);
+              // here the count shouldnt matter as
+              // it only applies for the suggested items
+              // which dont have pagination
+              handleResponse(
+                {
+                  count: size,
+                  products,
+                },
+                res
+              );
             }
           }
         });
     } else {
-      Product.find(query)
-        .select("title price imgData sizes")
-        .populate("sizes")
-        .limit(sizeNumb)
-        .skip((pageNumb - 1) * sizeNumb)
-        .sort({
-          createdAt: "desc",
-        })
-        .exec((err, products) => {
-          if (err) {
-            handleResponse(err, res, 500);
-          } else {
-            handleResponse(products, res);
-          }
-        });
+      // so first we do the document count
+      // based on the querried documents
+      Product.countDocuments(query).exec((countErr, count) => {
+        if (countErr) {
+          handleResponse(countErr, res, 500);
+        } else {
+          // and then we remake the actual query with pagination
+          Product.find(query)
+            .select("title price imgData sizes")
+            .populate("sizes")
+            .limit(sizeNumb)
+            .skip((pageNumb - 1) * sizeNumb)
+            .sort({
+              createdAt: "desc",
+            })
+            .exec((err, products) => {
+              if (err) {
+                handleResponse(err, res, 500);
+              } else {
+                handleResponse(
+                  {
+                    count,
+                    products,
+                  },
+                  res
+                );
+              }
+            });
+        }
+      });
     }
   },
   getProduct: (req, res) => {
