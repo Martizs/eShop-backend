@@ -35,12 +35,6 @@ const imgDest = multer({
 // getting the local authentication type
 const LocalStrategy = passportLocal.Strategy;
 
-// TODO: use this for file uploads
-// destination for file uploads
-// const profPicDest = multer({
-//   dest: profilePics,
-// });
-
 /* ------------ PASSPORT CONFIG START ------------------ */
 // base auth
 passport.use(

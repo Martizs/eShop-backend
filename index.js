@@ -56,8 +56,6 @@ app.use(passport.session());
 // connecting to router
 app.use("/api", router);
 // also here we set up secure static files
-// TODO: use this for secure static file serving
-// app.use("/static", authMiddleware, express.static(profilePics));
 
 app.listen(process.env.PORT, () => {
   console.log(getDateStamp(), `Listening at on: ${process.env.PORT}`);
