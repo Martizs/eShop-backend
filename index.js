@@ -39,6 +39,7 @@ app.use("/static", express.static("static"));
 
 app.use(
   session({
+    proxy: true,
     // session expiration set to 1 hour
     cookie: {
       maxAge: 600000 * 6,
