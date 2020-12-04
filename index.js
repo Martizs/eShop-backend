@@ -39,10 +39,11 @@ app.use("/static", express.static("static"));
 
 app.use(
   session({
-    // TODO: use this in production
-    // cookie: { secure: true }
     // session expiration set to 1 hour
-    cookie: { maxAge: 600000 * 6 },
+    cookie: {
+      maxAge: 600000 * 6,
+      secure: process.env.NODE_ENV === "production",
+    },
     secret: process.env.COOKIE_KEY,
     resave: false,
     saveUninitialized: false,
