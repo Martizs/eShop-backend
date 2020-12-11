@@ -6,12 +6,22 @@ const SendOptionSchema = new mongoose.Schema({
     required: true,
   },
 
+  enName: {
+    type: String,
+    default: "",
+  },
+
   short: {
     type: String,
     required: true,
   },
 
   extraInfo: String,
+
+  enExtraInfo: {
+    type: String,
+    default: "",
+  },
 
   price: {
     type: Number,

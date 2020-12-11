@@ -5,6 +5,11 @@ const AboutSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  enText: {
+    type: String,
+    required: true,
+    default: "",
+  },
 });
 
 const About = mongoose.model("About", AboutSchema);

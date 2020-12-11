@@ -23,8 +23,10 @@ export const SendOptionsController = {
                 insertOne: {
                   document: {
                     name: option.name,
+                    enName: option.enName,
                     price: option.price,
                     extraInfo: option.extraInfo,
+                    enExtraInfo: option.enExtraInfo,
                     short: option.short,
                   },
                 },
@@ -35,8 +37,10 @@ export const SendOptionsController = {
                 if (
                   dbOption._id == option._id &&
                   (dbOption.name !== option.name ||
+                    dbOption.enName !== option.enName ||
                     dbOption.price !== option.price ||
                     dbOption.extraInfo !== option.extraInfo ||
+                    dbOption.enExtraInfo !== option.enExtraInfo ||
                     dbOption.short !== option.short)
                 ) {
                   updtOptions.push({
@@ -45,8 +49,10 @@ export const SendOptionsController = {
                       update: {
                         $set: {
                           name: option.name,
+                          enName: option.enName,
                           price: option.price,
                           extraInfo: option.extraInfo,
+                          enExtraInfo: option.enExtraInfo,
                           short: option.short,
                         },
                       },

@@ -6,6 +6,10 @@ const ProductSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    enTitle: {
+      type: String,
+      default: "",
+    },
     price: {
       type: Number,
       required: true,
@@ -15,6 +19,7 @@ const ProductSchema = new mongoose.Schema(
       required: true,
     },
     desc: String,
+    enDesc: String,
     discPrice: Number,
     imgData: [
       {

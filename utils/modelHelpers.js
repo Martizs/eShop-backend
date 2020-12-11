@@ -2,11 +2,11 @@ import { handleResponse } from "./general";
 
 export function saveCMS(req, res, model) {
   try {
-    const { text, id } = req.body;
+    const { text, enText, id } = req.body;
 
     if (id) {
       // update
-      model.updateOne({ _id: id }, { text }, (err) => {
+      model.updateOne({ _id: id }, { text, enText }, (err) => {
         if (err) {
           handleResponse(err, res, 500);
         } else {
@@ -15,7 +15,7 @@ export function saveCMS(req, res, model) {
       });
     } else {
       // create
-      model.create({ text }, (err) => {
+      model.create({ text, enText }, (err) => {
         if (err) {
           handleResponse(err, res, 500);
         } else {

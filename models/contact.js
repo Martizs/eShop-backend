@@ -5,6 +5,11 @@ const ContactSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  enText: {
+    type: String,
+    required: true,
+    default: "",
+  },
 });
 
 const Contact = mongoose.model("Contact", ContactSchema);

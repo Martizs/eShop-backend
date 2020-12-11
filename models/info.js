@@ -5,6 +5,11 @@ const InfoSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  enText: {
+    type: String,
+    required: true,
+    default: "",
+  },
 });
 
 const Info = mongoose.model("Info", InfoSchema);

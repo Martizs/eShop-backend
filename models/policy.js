@@ -5,6 +5,11 @@ const PolicySchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  enText: {
+    type: String,
+    required: true,
+    default: "",
+  },
 });
 
 const Policy = mongoose.model("Policy", PolicySchema);

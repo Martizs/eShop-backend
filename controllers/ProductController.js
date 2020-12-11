@@ -16,9 +16,11 @@ export const ProductController = {
       const {
         id,
         title,
+        enTitle,
         price,
         discPrice,
         desc,
+        enDesc,
         category,
         sizes,
         imgData,
@@ -151,9 +153,11 @@ export const ProductController = {
                   // AAAAND finally we save the product
 
                   product.title = title;
+                  product.enTitle = enTitle;
                   product.price = price;
                   product.discPrice = discPrice === "null" ? null : discPrice;
                   product.desc = desc === "null" ? null : desc;
+                  product.enDesc = enDesc === "null" ? null : enDesc;
                   product.category = category;
 
                   const newProdSizes = [];
@@ -187,9 +191,11 @@ export const ProductController = {
       } else {
         const prodData = {
           title,
+          enTitle,
           price,
           discPrice,
           desc,
+          enDesc,
           category,
           sizes: [],
           imgData: [],
@@ -313,7 +319,7 @@ export const ProductController = {
         }
 
         Product.find(query)
-          .select("title price discPrice imgData sizes")
+          .select("title enTitle price discPrice imgData sizes")
           .populate("sizes")
           .exec((err, products) => {
             if (err) {
@@ -377,7 +383,7 @@ export const ProductController = {
           } else {
             // and then we remake the actual query with pagination
             Product.find(query)
-              .select("title price discPrice imgData sizes")
+              .select("title enTitle price discPrice imgData sizes")
               .populate("sizes")
               .limit(sizeNumb)
               .skip((pageNumb - 1) * sizeNumb)
