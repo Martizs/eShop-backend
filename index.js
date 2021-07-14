@@ -58,6 +58,9 @@ app.use(passport.session());
 // connecting to router
 app.use("/api", router);
 // also here we set up secure static files
+app.use("/test", (req, res) => {
+  res.send("hello therezzz");
+});
 
 app.listen(process.env.PORT, () => {
   console.log(getDateStamp(), `Listening at on: ${process.env.PORT}`);
