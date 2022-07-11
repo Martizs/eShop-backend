@@ -1,4 +1,3 @@
-import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import express from "express";
 import session from "express-session";
@@ -31,8 +30,8 @@ mongoose
   );
 
 app.use(cookieParser());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // for parsing multipart/form-data
 app.use("/static", express.static("static"));
@@ -57,10 +56,6 @@ app.use(passport.session());
 
 // connecting to router
 app.use("/api", router);
-// also here we set up secure static files
-app.use("/test", (req, res) => {
-  res.send("hello therezzz");
-});
 
 app.listen(process.env.PORT, () => {
   console.log(getDateStamp(), `Listening at on: ${process.env.PORT}`);

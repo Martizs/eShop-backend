@@ -70,7 +70,6 @@ passport.serializeUser((user, done) => {
   done(null, user._id);
 });
 // ah yes this for getting user data
-// yet how secure is this hmmmm
 passport.deserializeUser((id, done) => {
   User.findById(id).exec((err, user) => {
     if (err) {

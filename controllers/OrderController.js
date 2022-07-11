@@ -116,7 +116,7 @@ export const OrderController = {
         });
       });
 
-      console.log(getDateStamp(), "Order made with sizeIds", sizeIds);
+      // console.log(getDateStamp(), "Order made with sizeIds", sizeIds);
 
       Size.bulkWrite(updtSizes)
         .then(() => {
